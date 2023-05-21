@@ -51,6 +51,8 @@ resource "aws_lambda_function" "aws_lambda_test" {
   handler          = "module.handler"
   runtime          = "python3.9"
   timeout          = 180
+  role = aws_iam_role.lambda_exec_role.arn
+  memory_size = 128
 }
 
 resource "aws_lambda_permission" "allow_bucket" {
