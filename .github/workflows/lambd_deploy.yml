@@ -17,6 +17,12 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install awscliv2
+    - name: Configure my AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id    :  ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region           :  us-east-1
     - name: zip lambda
       run: | 
         cd lambda_function
@@ -27,12 +33,6 @@ jobs:
         zip -r ../dep-package.zip .
         cd ..
         zip dep-package.zip lambda.py
-    - name: Configure my AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id    :  ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region           :  us-east-1
 
     - name: upload zip
       run: aws s3 cp lambda_function/dep-package.zip s3://amy-powerbi/dep-package.zip --region us-east-1 
