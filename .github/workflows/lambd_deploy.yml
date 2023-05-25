@@ -29,6 +29,18 @@ jobs:
         cd ..
         zip dep-package.zip lambda.py
 
+    - uses: hkusu/s3-upload-action@v2
+      id: upload # specify some ID for use in subsequent steps
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: 'us-east-1'
+        aws-bucket: amy-powerbi
+        file-path: './lambda_function/dep-package.zip'
+        output-qr-url: 'true' # specify true
+    - name: Show URL
+      run: echo '${{ steps.upload.outputs.qr-url }}' # use this output
+  
     - name: upload zip 
 #       env:
 #         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
