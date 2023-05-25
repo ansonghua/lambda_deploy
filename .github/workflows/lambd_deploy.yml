@@ -26,7 +26,7 @@ jobs:
         cd package
         zip -r ../dep-package.zip .
         cd ..
-        zip dep-package.zip lambda_function.py
+        zip dep-package.zip lambda.py
         
     - run: aws cp lambda_fuction/dep-package.zip s3://amy-powerbi --region us-east-1 --cache-control max-age=0 --acl public-read --delete
 #     - run: aws s3 sync builddir s3://amy-powerbi --region us-east-1 --cache-control max-age=0 --acl public-read --delete
