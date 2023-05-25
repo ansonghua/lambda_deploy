@@ -32,7 +32,7 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+        aws-region: us-east-1
     - name: upload zip
       run: aws s3 cp lambda_function/dep-package.zip s3://amy-powerbi/dep-package.zip --region us-east-1 
 #     - run: aws s3 sync builddir s3://amy-powerbi --region us-east-1 --cache-control max-age=0 --acl public-read --delete
