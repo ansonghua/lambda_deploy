@@ -3,6 +3,8 @@ name: lambda deployment
 on: 
   push:
     branches: [main]
+    paths:
+      - lambda_function/**
   pull_request:
     branches: [main]
 jobs:
