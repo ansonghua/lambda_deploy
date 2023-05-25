@@ -48,17 +48,17 @@ jobs:
         cd ..
         zip dep-package.zip lambda.py
 
-    - uses: hkusu/s3-upload-action@v2
-      id: upload # specify some ID for use in subsequent steps
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: 'us-east-1'
-        aws-bucket: amy-powerbi
-        file-path: './lambda_function/dep-package.zip'
-        output-qr-url: 'true' # specify true
-    - name: Show URL
-      run: echo '${{ steps.upload.outputs.qr-url }}' # use this output
+#     - uses: hkusu/s3-upload-action@v2
+#       id: upload # specify some ID for use in subsequent steps
+#       with:
+#         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#         aws-region: 'us-east-1'
+#         aws-bucket: amy-powerbi
+#         file-path: './lambda_function/dep-package.zip'
+#         output-qr-url: 'true' # specify true
+#     - name: Show URL
+#       run: echo '${{ steps.upload.outputs.qr-url }}' # use this output
   
     - name: upload zip 
       env:
@@ -69,4 +69,10 @@ jobs:
       run: |
         aws s3 cp lambda_function/dep-package.zip s3://amy-powerbi/dep-package.zip --region us-east-1 
 #     - run: aws s3 sync builddir s3://amy-powerbi --region us-east-1 --cache-control max-age=0 --acl public-read --delete
-
+    - name: deploy lambda code
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_ACCESS_KEY_SECRET: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      run: |
+        aws lambda update-function-code --function-name test region --us-east-1 --zip-file lambda_function/dep-package.zip
