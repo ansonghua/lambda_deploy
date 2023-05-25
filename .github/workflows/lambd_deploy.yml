@@ -16,7 +16,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install awscli
+        pip install awscliv2
     - name: zip lambda
       run: | 
         cd lambda_function
