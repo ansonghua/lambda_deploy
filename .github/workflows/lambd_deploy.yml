@@ -35,7 +35,7 @@ jobs:
 #         AWS_ACCESS_KEY_SECRET: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 #         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       run: |
-        env | AWS
+        env | grep AWS
         aws s3 cp lambda_function/dep-package.zip s3://amy-powerbi/dep-package.zip --region us-east-1 
 #     - run: aws s3 sync builddir s3://amy-powerbi --region us-east-1 --cache-control max-age=0 --acl public-read --delete
 
