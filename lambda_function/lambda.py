@@ -2,7 +2,7 @@ import json
 import requests
 
 from json_checker import Checker
-
+    
 
 def lambda_handler(event, context):
     current_data = {'first_key': 1, 'second_key': '2'}
