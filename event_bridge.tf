@@ -1,6 +1,6 @@
 resource "aws_cloudwatch_event_rule" "s3_object_create_invoke_lambda" {
 
-  name           = "insightdb-justifications-rule"
+  name           = "amy-event-bridge-test-rule"
   description    = "Justification file has been posted"
 
   event_pattern = <<EOF
