@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - lambda_function/**
+      - .github/workflows/**
   pull_request:
     branches: [main]
 jobs:
