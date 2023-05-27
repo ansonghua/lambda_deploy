@@ -35,7 +35,7 @@ resource "aws_s3_bucket_versioning" "bucket" {
   }
 }
 
-resource "aws_s3_bucket_acl" "bucket" {
-  bucket = aws_s3_bucket.my_bucket.bucket
-  acl    = "private"
-}
+# resource "aws_s3_bucket_acl" "bucket" {
+#   bucket = aws_s3_bucket.my_bucket.bucket
+#   acl    = "private"
+# }
