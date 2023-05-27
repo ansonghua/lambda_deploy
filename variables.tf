@@ -7,11 +7,11 @@ variable "region" {
 }
 
 variable "email_to" {
-  default = "us-east-1"
+  default = "xxx@ccc.com"
 }
 
 variable "email_from" {
-  default = "us-east-1"
+  default = "yyy@ccc.com"
 }
 
 # variable "path_source_code" {
