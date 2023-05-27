@@ -21,7 +21,7 @@ def lambda_handler(event, context):
     }
 
     try:
-        response = requests.post(
+        requests.post(
             'https://python-lambda.free.beeceptor.com/my/api/path',
             data=json.dumps(data)
         )
