@@ -13,7 +13,7 @@ resource "aws_lambda_function" "test_lambda" {
   runtime       = "python3.9"
   timeout       = 600
   memory_size   = 192
-}
+
   layers = ["arn:aws:lambda:us-east-1:336392948345:layer:AWSSDKPandas-Python39:3"]
 
   environment {
@@ -25,3 +25,4 @@ resource "aws_lambda_function" "test_lambda" {
       BUCKET_NAME             = aws_s3_bucket.my_bucket.bucket
     }
   }
+}
