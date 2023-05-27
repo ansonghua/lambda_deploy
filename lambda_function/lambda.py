@@ -1,6 +1,5 @@
-import json from json
-import requests from requests
-
+from json import json 
+from requests import requests 
 from json_checker import Checker
     
 
