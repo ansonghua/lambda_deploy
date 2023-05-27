@@ -1,5 +1,4 @@
 import json
-import requests
 
 from json_checker import Checker
     
