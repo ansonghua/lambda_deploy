@@ -1,5 +1,5 @@
 variable "env" {
-  default = "dev"
+  default = "dev2"
 }
 
 variable "region" {
