@@ -11,6 +11,7 @@ on:
 jobs:
   setup-env:
     runs-on: ubuntu-latest
+    outputs: ${{ steps.env-setup.state.env_name }}
     steps:
     - id: env-setup
       run: |
@@ -20,10 +21,8 @@ jobs:
         elif [ "${{ github.ref }}" = "refs/heads/dev" ]; then
           echo "env_name=dev" >> $GITHUB_OUTPUT
         else
-           echo "env_name=feature" >> $GITHUB_OUTPUT
+           echo "env_name=feature" >> $GITHUB_STATE
         fi               
-    - run: |
-        echo "${{ steps.env-setup.outputs.env_name }}"
 
   build:
     runs-on: ubuntu-latest
