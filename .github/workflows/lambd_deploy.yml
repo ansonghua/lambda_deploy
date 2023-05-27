@@ -12,8 +12,7 @@ jobs:
   setup-env:
     runs-on: ubuntu-latest
     steps:
-    - name: Some check on branch
-      id: env-setup
+    - id: env-setup
       run: |
         echo "Running on branch ${{ github.ref }}"
         if [ "${{ github.ref }}" = "refs/heads/main" ]; then
