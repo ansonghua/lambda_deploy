@@ -24,7 +24,8 @@ jobs:
         else
            echo "env_name=feature" >> $GITHUB_STATE
         fi               
-
+    - run: |
+        echo "${{ steps.env-setup.state.env_name }}"
   build:
     runs-on: ubuntu-latest
     needs: [setup-env]
