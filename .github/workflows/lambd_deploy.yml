@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [env-setup]
     environment: 
-      name: ${{ steps.env-setup.outputs.env_name }}
+      name: ${{ jobs.env-setup.outputs.env_name }}
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-python@v2
