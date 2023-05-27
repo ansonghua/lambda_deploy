@@ -11,6 +11,8 @@ on:
 jobs:
   setup-env:
     runs-on: ubuntu-latest
+    outputs:
+      env_name: ${{ steps.env-setup.outputs.env_name }}    
     steps:
     - id: env-setup
       run: |
