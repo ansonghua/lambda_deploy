@@ -9,10 +9,11 @@ on:
   pull_request:
     branches: [main]
 jobs:
-  env-setup:
+  setup-env:
     runs-on: ubuntu-latest
     steps:
     - name: Some check on branch
+      id: env-setup
       run: |
         echo "Running on branch ${{ github.ref }}"
         if [ "${{ github.ref }}" = "refs/heads/main" ]; then
@@ -25,9 +26,9 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    needs: [env-setup]
+    needs: [setup-env]
     environment: 
-      name: ${{ jobs.env-setup.outputs.env_name }}
+      name: ${{ steps.env-setup.outputs.env_name }}
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-python@v2
