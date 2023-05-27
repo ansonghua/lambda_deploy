@@ -22,6 +22,8 @@ jobs:
         else
            echo "env_name=feature" >> $GITHUB_OUTPUT
         fi               
+    - run: |
+        echo "${{ steps.env-setup.outputs.env_name }}"
 
   build:
     runs-on: ubuntu-latest
