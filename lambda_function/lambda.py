@@ -1,5 +1,5 @@
-import json
-import requests
+import json from json
+import requests from requests
 
 from json_checker import Checker
     
