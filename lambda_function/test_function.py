@@ -62,7 +62,7 @@ def lambda_handler(event, context):
     sharepoint_file_path = get_sharepoint_file_path(drive_path,file_relative_path)
     download_file_from_sharepoint(access_token, sharepoint_file_path, f'/tmp/${download_file_name}')
 
-
+    print(f'donwload file name: {download_file_name}')
     s3_bucket = s3.Bucket(name=bucket_name)
     s3_bucket.upload_file(
         Filename=f'/tmp/${download_file_name}',
