@@ -58,6 +58,7 @@ jobs:
         zip -r ../dep-package.zip .
         cd ..
         pwd
+        ls -al 
         zip dep-package.zip ./test_function.py
 
 #     - uses: hkusu/s3-upload-action@v2
