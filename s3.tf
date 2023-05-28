@@ -28,12 +28,12 @@ resource "aws_s3_bucket_public_access_block" "my_bucket" {
   restrict_public_buckets = true
 }
 
-resource "aws_s3_bucket_versioning" "bucket" {
-  bucket = aws_s3_bucket.my_bucket.bucket
-  versioning_configuration {
-    status = "Enabled"
-  }
-}
+# resource "aws_s3_bucket_versioning" "bucket" {
+#   bucket = aws_s3_bucket.my_bucket.bucket
+#   versioning_configuration {
+#     status = "Enabled"
+#   }
+# }
 
 # resource "aws_s3_bucket_acl" "bucket" {
 #   bucket = aws_s3_bucket.my_bucket.bucket
