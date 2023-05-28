@@ -2,7 +2,7 @@ import os
 import boto3
 import logging
 from utils import get_secret
-from sharepoint_util import get_access_token, upload_file_to_sharepoint,get_drive_id,get_sharepoint_file_path
+from sharepoint_util import get_access_token, upload_file_to_sharepoint,get_drive_id,get_sharepoint_file_path,download_file_from_sharepoint
 
 DEFAULT_TAGS = os.environ.get("DEFAULT_TAGS")
 print("DEFAULT_TAGS", DEFAULT_TAGS)
@@ -55,19 +55,32 @@ def lambda_handler(event, context):
     upload_file_to_sharepoint(access_token, sharepoint_file_path, f'/tmp/${file_name_without_prefix}')
     # print(access_token)
     s3.Object(os.environ['REPROT_BUCKET_NAME'],file_name).delete()
+#################################
+    
+    download_file_name = 'template.pptx'
+    file_relative_path = f'{folder_relative_path}/{download_file_name}'
+    sharepoint_file_path = get_sharepoint_file_path(drive_path,file_relative_path)
+    download_file_from_sharepoint(access_token, sharepoint_file_path, f'/tmp/${download_file_name}')
 
-    instances = ['i-09cafb1d617acfd93']
 
-    if not instances:
-        logger.warning('No instances available with this tags')
-    else:
-        if event['action'] == 'stop':
+    s3_bucket = s3.Bucket(name=bucket_name)
+    s3_bucket.upload_file(
+        Filename=f'/tmp/${download_file_name}',
+        Key='from_sp/${download_file_name}'
+    )
 
-            ec2_client.start_instances(InstanceIds=instances)
-            logger.info('Starting instances.')
-        # elif event['action'] == 'start':
-        #     ec2_client.stop_instances(InstanceIds=instances)
-        #     logger.info('Stopping instances.')
-        else:
-            logger.warning('No instances availables with this tags')
+    # instances = ['i-09cafb1d617acfd93']
+
+    # if not instances:
+    #     logger.warning('No instances available with this tags')
+    # else:
+    #     if event['action'] == 'stop':
+
+    #         ec2_client.start_instances(InstanceIds=instances)
+    #         logger.info('Starting instances.')
+    #     # elif event['action'] == 'start':
+    #     #     ec2_client.stop_instances(InstanceIds=instances)
+    #     #     logger.info('Stopping instances.')
+    #     else:
+    #         logger.warning('No instances availables with this tags')
 

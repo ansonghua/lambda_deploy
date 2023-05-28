@@ -62,3 +62,23 @@ def get_list(access_token, share_point_query_url):
     )
     
     return response.json()['value']
+
+
+
+def download_file_from_sharepoint(access_token, download_url, dest_file_path):
+    headers = {
+        "Authorization": f"Bearer {access_token}",
+        "Content-Type": "application/json"
+    }
+#     local_filename = download_url.split('/')[-2]
+    print(dest_file_path)
+    # NOTE the stream=True parameter below
+    with requests.get(download_url, headers=headers, stream=True) as r:
+        r.raise_for_status()
+        with open(dest_file_path, 'wb') as f:
+            for chunk in r.iter_content(chunk_size=8192): 
+                # If you have chunk encoded response uncomment if
+                # and set chunk_size parameter to None.
+                #if chunk: 
+                f.write(chunk)
+    return dest_file_path
