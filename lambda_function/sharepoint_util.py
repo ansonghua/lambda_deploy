@@ -42,3 +42,10 @@ def upload_file_to_sharepoint(access_token, upload_url, src_file_path):
 
 def get_sharepoint_file_path(drive_path, file_relative_path):
     return f'{drive_path}/{file_relative_path}:/content'
+
+def get_drive_id(access_token, site_url_prefix, drive_name):
+    query_url= f'{site_url_prefix}/drives?$select=id,name'
+    drive_list = get_list(access_token, query_url)
+    for drive in drive_list:
+        if drive['name'] == drive_name:
+            return drive['id']
