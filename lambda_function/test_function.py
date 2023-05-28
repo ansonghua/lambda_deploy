@@ -1,7 +1,7 @@
 import os
 import boto3
 import logging
-
+from utils import get_secret
 DEFAULT_TAGS = os.environ.get("DEFAULT_TAGS")
 print("DEFAULT_TAGS", DEFAULT_TAGS)
 
@@ -14,16 +14,14 @@ ec2_resource = boto3.resource('ec2')
 ec2_client = boto3.client('ec2')
     
 def lambda_handler(event, context):
-    """
-        Function that start and stop ec2 instances schedule and with specific tags<br/>
-        :param event: Input event, that should contain action and tags parameters, where tags is a list of comma separates key/value tags.<br/>
-        :param context: Lambda context.<br/>
-        :return: nothing
-    """
-    logger.debug(event)
 
+    logger.debug(event)
     print("event -- ", event)
-  
+    
+    print("secret -- ", get_secret('sharepoint_secret')['client_id'])
+
+
+
 
     instances = ['i-09cafb1d617acfd93']
 
