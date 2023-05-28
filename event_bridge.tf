@@ -46,7 +46,6 @@ EOF
 
 resource "aws_cloudwatch_event_target" "s3_object_create_invoke_lambda" {
   rule           = aws_cloudwatch_event_rule.s3_object_create_invoke_lambda.name
-  input          = "{\"action\":\"start\"}"
   arn            = aws_lambda_function.test_lambda.arn
 }
 
