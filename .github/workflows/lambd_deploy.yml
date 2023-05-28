@@ -57,6 +57,7 @@ jobs:
         zip -r ../dep-package.zip .
         cd ..
         echo $github.workspace
+        pwd
         ls -al 
         zip dep-package.zip test_function.py
 
