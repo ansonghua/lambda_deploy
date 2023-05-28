@@ -54,7 +54,7 @@ jobs:
         mkdir package
         pip install --target ./package -r requirements.txt
         cd package
-        zip -r ../dep-package.zip .
+        zip -r ../dep-package.zip -i .
         cd ..
         echo $github.workspace
         pwd
