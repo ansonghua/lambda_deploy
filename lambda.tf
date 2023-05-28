@@ -27,7 +27,7 @@ resource "aws_lambda_function" "test_lambda" {
   }
 }
 
-resource "aws_lambda_permission" "event_bus_invoke_lambda" {
+resource "aws_lambda_permission" "object_created_invoke_lambda" {
   function_name = aws_lambda_function.test_lambda.function_name
   principal     = "events.amazonaws.com"
   action        = "lambda:InvokeFunction"
@@ -35,7 +35,7 @@ resource "aws_lambda_permission" "event_bus_invoke_lambda" {
   source_arn    = aws_cloudwatch_event_rule.s3_object_create_invoke_lambda.arn
 }
 
-resource "aws_lambda_permission" "event_bus_invoke_lambda" {
+resource "aws_lambda_permission" "objecte_deleted_invoke_lambda" {
   function_name = aws_lambda_function.test_lambda.function_name
   principal     = "events.amazonaws.com"
   action        = "lambda:InvokeFunction"
