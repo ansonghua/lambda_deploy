@@ -21,9 +21,10 @@ def get_access_token(tenant_id, app_id, client_secret):
     if not result:
         result = msal_app.acquire_token_for_client(msal_scope)
 
-
+    print(result)
     if "access_token" in result:
         access_token = result['access_token']
         return access_token
     else:
         raise Exception("No Access Token found")
+
