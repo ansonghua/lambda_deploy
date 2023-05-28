@@ -46,12 +46,12 @@ EOF
 
 resource "aws_cloudwatch_event_target" "s3_object_create_invoke_lambda" {
   rule           = aws_cloudwatch_event_rule.s3_object_create_invoke_lambda.name
-  input          = "{\"action\":[\"start\"]}"
+  input          = "{\"action\":\"start\"}"
   arn            = aws_lambda_function.test_lambda.arn
 }
 
 resource "aws_cloudwatch_event_target" "s3_object_delete_invoke_lambda" {
   rule           = aws_cloudwatch_event_rule.s3_object_delete_invoke_lambda.name
-  input          = "{\"action\":[\"stop\"]}"
+  input          = "{\"action\":\"stop\"}"
   arn            = aws_lambda_function.test_lambda.arn
 }
