@@ -2,6 +2,8 @@ import os
 import boto3
 import logging
 from utils import get_secret
+from sharepoint_util import get_access_token
+
 DEFAULT_TAGS = os.environ.get("DEFAULT_TAGS")
 print("DEFAULT_TAGS", DEFAULT_TAGS)
 
@@ -21,7 +23,10 @@ def lambda_handler(event, context):
     logger.debug(event)
     print("event -- ", event)
     
-    print("secret -- ", get_secret('sharepoint_secret')['client_id'])
+    sharepoint_secret =  get_secret('sharepoint_secret')
+    tenant_id = sharepoint_secret['tenant_id']
+    app_id = sharepoint_secret['app_id']
+    client_secret = sharepoint_secret['client_secret']
 
     scan_staus = 'Initial'
     if scan_staus == 'Initial':
@@ -33,7 +38,8 @@ def lambda_handler(event, context):
         s3.meta.client.copy(copy_source, bucket_name, f'scan_result/{file_name_without_prefix}')
         s3.Object(os.environ['REPROT_BUCKET_NAME'],file_name).delete()
 
-
+    access_token = get_access_token(tenant_id, app_id, client_secret)
+    print(access_token)
 
     instances = ['i-09cafb1d617acfd93']
 
