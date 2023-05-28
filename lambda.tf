@@ -23,6 +23,7 @@ resource "aws_lambda_function" "test_lambda" {
       EMAIL_FROM       = var.email_from
       CONFIG_SECRET_ARN       = aws_secretsmanager_secret.my_secret.arn
       BUCKET_NAME             = aws_s3_bucket.my_bucket.bucket
+      REPROT_BUCKET_NAME      = aws_s3_bucket.my_bucket.bucket
     }
   }
 }
