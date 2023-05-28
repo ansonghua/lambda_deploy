@@ -29,7 +29,7 @@ resource "aws_cloudwatch_event_rule" "s3_object_delete_invoke_lambda" {
   event_pattern = <<EOF
 {
   "source": ["aws.s3"],
-  "detail-type": ["Object Created"],
+  "detail-type": ["Object Deleted"],
   "detail": {
     "bucket": {
       "name": ["${aws_s3_bucket.my_bucket.bucket}"]
