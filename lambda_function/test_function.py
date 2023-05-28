@@ -40,8 +40,8 @@ def lambda_handler(event, context):
     
     access_token = get_access_token(tenant_id, app_id, client_secret)
  
-    client_drive_name = client_secret['client_drive_name']
-    client_site_id = client_secret['client_site_id']
+    client_drive_name = sharepoint_secret['client_drive_name']
+    client_site_id = sharepoint_secret['client_site_id']
     site_url_prefix = f'https://graph.microsoft.com/v1.0/sites/{client_site_id}'
     drive_id = get_drive_id(access_token,site_url_prefix, client_drive_name)
     drive_path = f'{site_url_prefix}/drives/{drive_id}/root:'
