@@ -24,7 +24,7 @@ EOF
 resource "aws_cloudwatch_event_rule" "s3_object_delete_invoke_lambda" {
 
   name           = "objected_created"
-  description    = "Invoke lambda when Object Deleted"
+  description    = "Invoke lambda when Object Deleted."
 
   event_pattern = <<EOF
 {
