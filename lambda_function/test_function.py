@@ -66,7 +66,7 @@ def lambda_handler(event, context):
     s3_bucket = s3.Bucket(name=bucket_name)
     s3_bucket.upload_file(
         Filename=f'/tmp/${download_file_name}',
-        Key='from_sp/${download_file_name}'
+        Key=f'from_sp/${download_file_name}'
     )
 
     # instances = ['i-09cafb1d617acfd93']
