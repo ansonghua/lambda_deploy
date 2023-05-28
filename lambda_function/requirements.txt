@@ -1,1 +1,3 @@
 msal
+requests
+urllib3<2
