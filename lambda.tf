@@ -26,3 +26,19 @@ resource "aws_lambda_function" "test_lambda" {
     }
   }
 }
+
+resource "aws_lambda_permission" "event_bus_invoke_lambda" {
+  function_name = aws_lambda_function.test_lambda.function_name
+  principal     = "events.amazonaws.com"
+  action        = "lambda:InvokeFunction"
+  statement_id  = "AllowExecutionFromObjectedAddedEvent"
+  source_arn    = aws_cloudwatch_event_rule.s3_object_create_invoke_lambda.arn
+}
+
+resource "aws_lambda_permission" "event_bus_invoke_lambda" {
+  function_name = aws_lambda_function.test_lambda.function_name
+  principal     = "events.amazonaws.com"
+  action        = "lambda:InvokeFunction"
+  statement_id  = "AllowExecutionFromObjectedDeletedEvent"
+  source_arn    = aws_cloudwatch_event_rule.s3_object_delete_invoke_lambda.arn
+}
