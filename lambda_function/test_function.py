@@ -39,18 +39,18 @@ def lambda_handler(event, context):
         s3.Object(os.environ['REPROT_BUCKET_NAME'],file_name).delete()
 
     access_token = get_access_token(tenant_id, app_id, client_secret)
-    print(access_token)
+    # print(access_token)
 
     instances = ['i-09cafb1d617acfd93']
 
     if not instances:
         logger.warning('No instances available with this tags')
     else:
-        if event['action'] == 'start':
+        if event['action'] == 'stop':
             ec2_client.start_instances(InstanceIds=instances)
             logger.info('Starting instances.')
-        elif event['action'] == 'stop':
-            ec2_client.stop_instances(InstanceIds=instances)
-            logger.info('Stopping instances.')
+        # elif event['action'] == 'start':
+        #     ec2_client.stop_instances(InstanceIds=instances)
+        #     logger.info('Stopping instances.')
         else:
             logger.warning('No instances availables with this tags')
