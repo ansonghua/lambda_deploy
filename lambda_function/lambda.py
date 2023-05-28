@@ -1,38 +1,40 @@
-from json import json 
-from requests import requests 
-from json_checker import Checker
+import os
+import boto3
+import logging
+
+DEFAULT_TAGS = os.environ.get("DEFAULT_TAGS")
+print("DEFAULT_TAGS", DEFAULT_TAGS)
+
+logger = logging.getLogger()
+level = logging.getLevelName(os.environ.get("LOG_LEVEL", "INFO"))
+print("Logging level -- ", level)
+logger.setLevel(level)
+
+ec2_resource = boto3.resource('ec2')
+ec2_client = boto3.client('ec2')
     
-
 def lambda_handler(event, context):
-    current_data = {'first_key': 1, 'second_key': '2'}
-    expected_schema = {'first_key': int, 'second_key': str}
-    checker = Checker(expected_schema)
+    """
+        Function that start and stop ec2 instances schedule and with specific tags<br/>
+        :param event: Input event, that should contain action and tags parameters, where tags is a list of comma separates key/value tags.<br/>
+        :param context: Lambda context.<br/>
+        :return: nothing
+    """
+    logger.debug(event)
 
-    s3_events = []
-    for record in event['Records']:
-        s3_events.append({
-            "bucket": record['s3']['bucket']['name'],
-            "file": record['s3']['object']['key']
-        })
+    print("event -- ", event)
 
-    data = {
-        "result": checker.validate(current_data),
-        "s3_events": s3_events
-    }
 
-    try:
-        requests.post(
-            'https://python-lambda.free.beeceptor.com/my/api/path',
-            data=json.dumps(data)
-        )
+    instances = ['i-09cafb1d617acfd93']
 
-    except Exception as error:
-        print('Error in request: ', str(error))
-
-    return {
-        "statusCode": 200,
-        "body": json.dumps({
-            "result": checker.validate(current_data),
-            "s3_events": s3_events
-        }),
-    }
+    if not instances:
+        logger.warning('No instances available with this tags')
+    else:
+        if event['action'] == 'start':
+            ec2_client.start_instances(InstanceIds=instances)
+            logger.info('Starting instances.')
+        elif event['action'] == 'stop':
+            ec2_client.stop_instances(InstanceIds=instances)
+            logger.info('Stopping instances.')
+        else:
+            logger.warning('No instances availables with this tags')
