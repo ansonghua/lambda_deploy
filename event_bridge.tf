@@ -1,6 +1,6 @@
 resource "aws_cloudwatch_event_rule" "s3_object_create_invoke_lambda" {
 
-  name           = "objected_created"
+  name           = "start ec2"
   description    = "Invoke Lambda When Object Created"
 
   event_pattern = <<EOF
@@ -23,7 +23,7 @@ EOF
 
 resource "aws_cloudwatch_event_rule" "s3_object_delete_invoke_lambda" {
 
-  name           = "objected_created"
+  name           = "stop ec2"
   description    = "Invoke lambda when Object Deleted."
 
   event_pattern = <<EOF
