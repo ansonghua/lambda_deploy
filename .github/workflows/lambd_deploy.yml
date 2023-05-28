@@ -53,7 +53,7 @@ jobs:
       run: | 
         cd lambda_function
         mkdir package
-        pip install --target ./package requests
+        pip install requests
         pip install --target ./package -r requirements.txt
         cd package
         zip -r ../dep-package.zip .
