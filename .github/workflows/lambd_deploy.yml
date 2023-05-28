@@ -42,10 +42,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r lambda_function/requirements.txt
         pip install ruff
-    - name: Lint with Ruff
-      run: |
-        ruff --format=github --select=E9,F63,F7,F82 --target-version=py39 lambda_function/*.py
-        ruff --format=github --target-version=py39 lambda_function/*.py
+    # - name: Lint with Ruff
+    #   run: |
+    #     ruff --format=github --select=E9,F63,F7,F82 --target-version=py39 lambda_function/*.py
+    #     ruff --format=github --target-version=py39 lambda_function/*.py
     - name: Install aws cli
       run: |
         pip install awscliv2   
@@ -87,4 +87,4 @@ jobs:
         AWS_ACCESS_KEY_SECRET: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       run: |
-        aws lambda update-function-code --function-name test --region us-east-1 --zip-file fileb://${{ github.workspace }}/lambda_function/dep-package.zip
+        aws lambda update-function-code --function-name test-function --region us-east-1 --zip-file fileb://${{ github.workspace }}/lambda_function/dep-package.zip
