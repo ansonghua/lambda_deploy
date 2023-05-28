@@ -13,11 +13,11 @@ def get_secret(secret_name):
         service_name='secretsmanager',
         region_name=region,
     )
-
     try:
         get_secret_value_response = client.get_secret_value(
             SecretId=secret_name
         )
+
     except ClientError as cli_err:
         print(f"Client Errors: {cli_err} ")
     except Exception as exception:

@@ -14,12 +14,23 @@ ec2_resource = boto3.resource('ec2')
 ec2_client = boto3.client('ec2')
     
 def lambda_handler(event, context):
+    bucket_name = str(event["detail"]["bucket"]["name"])
+    file_name = str(event["detail"]["object"]["key"])
+    file_name_without_prefix = file_name.split('/')[-1]
 
     logger.debug(event)
     print("event -- ", event)
     
     print("secret -- ", get_secret('sharepoint_secret')['client_id'])
 
+    scan_staus = 'Initial'
+    if scan_staus == 'Initial':
+        s3 = boto3.resource('s3')
+        copy_source = {
+            'Bucket': bucket_name,
+            'Key': file_name
+        }
+        s3.meta.client.copy(copy_source, bucket_name, f'scan_result/${file_name_without_prefix}')
 
 
 
