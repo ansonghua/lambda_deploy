@@ -47,8 +47,8 @@ def lambda_handler(event, context):
     drive_path = f'{site_url_prefix}/drives/{drive_id}/root:'
 
     folder_relative_path = 'Amy'
-    file_name = 'template.pptx'
-    file_relative_path = f'{folder_relative_path}/{file_name}'
+    # file_name = 'template.pptx'
+    file_relative_path = f'{folder_relative_path}/{file_name_without_prefix}'
     sharepoint_file_path = get_sharepoint_file_path(drive_path,file_relative_path)
  
     s3.Bucket(bucket_name).download_file(file_name, f'/tmp/${file_name_without_prefix}')
