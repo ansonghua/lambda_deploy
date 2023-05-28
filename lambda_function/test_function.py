@@ -51,8 +51,8 @@ def lambda_handler(event, context):
     file_relative_path = f'{folder_relative_path}/{file_name_without_prefix}'
     sharepoint_file_path = get_sharepoint_file_path(drive_path,file_relative_path)
  
-    s3.Bucket(bucket_name).download_file(file_name, f'/tmp/${file_name_without_prefix}')
-    upload_file_to_sharepoint(access_token, sharepoint_file_path, f'/tmp/${file_name_without_prefix}')
+    s3.Bucket(bucket_name).download_file(file_name, f'/tmp/{file_name_without_prefix}')
+    upload_file_to_sharepoint(access_token, sharepoint_file_path, f'/tmp/{file_name_without_prefix}')
     # print(access_token)
     s3.Object(os.environ['REPROT_BUCKET_NAME'],file_name).delete()
 #################################
@@ -60,13 +60,13 @@ def lambda_handler(event, context):
     download_file_name = 'template.pptx'
     file_relative_path = f'{folder_relative_path}/{download_file_name}'
     sharepoint_file_path = get_sharepoint_file_path(drive_path,file_relative_path)
-    download_file_from_sharepoint(access_token, sharepoint_file_path, f'/tmp/${download_file_name}')
+    download_file_from_sharepoint(access_token, sharepoint_file_path, f'/tmp/{download_file_name}')
 
     print(f'donwload file name: {download_file_name}')
     s3_bucket = s3.Bucket(name=bucket_name)
     s3_bucket.upload_file(
-        Filename=f'/tmp/${download_file_name}',
-        Key=f'from_sp/${download_file_name}'
+        Filename=f'/tmp/{download_file_name}',
+        Key=f'from_sp/{download_file_name}'
     )
 
     # instances = ['i-09cafb1d617acfd93']
