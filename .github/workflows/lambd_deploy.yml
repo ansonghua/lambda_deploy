@@ -87,4 +87,4 @@ jobs:
         AWS_ACCESS_KEY_SECRET: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       run: |
-        aws lambda update-function-code --function-name test-function --region us-east-1 --zip-file fileb://${{ github.workspace }}/lambda_function/dep-package.zip
+        aws lambda update-function-code --function-name test_function --region us-east-1 --zip-file fileb://${{ github.workspace }}/lambda_function/dep-package.zip
