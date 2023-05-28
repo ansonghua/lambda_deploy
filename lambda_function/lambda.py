@@ -23,7 +23,7 @@ def lambda_handler(event, context):
     logger.debug(event)
 
     print("event -- ", event)
-
+  
 
     instances = ['i-09cafb1d617acfd93']
 
