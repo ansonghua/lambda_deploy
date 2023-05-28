@@ -49,3 +49,16 @@ def get_drive_id(access_token, site_url_prefix, drive_name):
     for drive in drive_list:
         if drive['name'] == drive_name:
             return drive['id']
+
+def get_list(access_token, share_point_query_url):
+    headers = {
+        "Authorization": f"Bearer {access_token}",
+        "Content-Type": "application/json"
+    }
+
+    response = requests.get(   
+        url= share_point_query_url,
+        headers = headers,
+    )
+    
+    return response.json()['value']
