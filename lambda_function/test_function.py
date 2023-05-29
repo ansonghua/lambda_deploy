@@ -33,8 +33,8 @@ def split_and_upload_csp_scan_result(df,csps,bucket_name,rescan):
         if len(csp_cheks_list) == 0:
             continue
 
-        df['query_result']['data']['rows'] = csp_cheks_list
-        df.to_json(local_file_path)
+        df2['query_result']['data']['rows'] = csp_cheks_list
+        df2.to_json(local_file_path)
         
         s3_bucket = s3.Bucket(name=bucket_name)
         file_prefix = "rescan" if rescan else "initial-scan"
