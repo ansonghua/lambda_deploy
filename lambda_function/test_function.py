@@ -49,7 +49,7 @@ def lambda_handler(event, context):
 
 
     if file_name_without_prefix == scan_result_file_name:
-        file_obj = s3.Bucket(bucket_name).Object(file_name).get()
+        file_obj = s3.Bucket(bucket_name).Object(file_name).get()['Body'].read()
         split_and_upload_csp_scan_result(file_obj, 'aws', bucket_name)
         split_and_upload_csp_scan_result(file_obj, 'azure', bucket_name)
         split_and_upload_csp_scan_result(file_obj, 'gcp', bucket_name)
