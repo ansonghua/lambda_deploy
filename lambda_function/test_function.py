@@ -19,11 +19,11 @@ logger.setLevel(level)
 scan_result_file_name = 'scan-results.json'
 
 s3 = boto3.resource('s3')
-def split_and_upload_csp_scan_result(file_obj,csp,bucket_name):
+
+def split_and_upload_csp_scan_result(df,csp,bucket_name):
     csp_scan_file_name = f'{csp}-{scan_result_file_name}'
     local_file_path = f'/tmp/{csp_scan_file_name}'
     
-    df = pd.read_json(file_obj)
     check_lilst = df['query_result']['data']['rows']
     csp_cheks_list = [check for check in check_lilst if check['Provider'] == csp]
     df['query_result']['data']['rows'] = csp_cheks_list
@@ -52,9 +52,10 @@ def lambda_handler(event, context):
     if file_name_without_prefix == scan_result_file_name:
         file_content = s3.Bucket(bucket_name).Object(file_name).get()['Body'].read()
         file_obj = io.BytesIO(file_content)
-        split_and_upload_csp_scan_result(file_obj, 'azure', bucket_name)
-        split_and_upload_csp_scan_result(file_obj, 'aws', bucket_name)
-        split_and_upload_csp_scan_result(file_obj, 'gcp', bucket_name)
+        df = pd.read_json(file_obj)
+        split_and_upload_csp_scan_result(df, 'azure', bucket_name)
+        split_and_upload_csp_scan_result(df, 'aws', bucket_name)
+        split_and_upload_csp_scan_result(df, 'gcp', bucket_name)
 
 #     scan_staus = 'Initial'
 
