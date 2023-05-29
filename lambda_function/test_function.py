@@ -67,23 +67,23 @@ def lambda_handler(event, context):
 #         s3.meta.client.copy(copy_source, bucket_name, f'scan_result/{file_name_without_prefix}')
 
     
-#     access_token = get_access_token(tenant_id, app_id, client_secret)
+    access_token = get_access_token(tenant_id, app_id, client_secret)
  
-#     client_drive_name = sharepoint_secret['client_drive_name']
-#     client_site_id = sharepoint_secret['client_site_id']
-#     site_url_prefix = f'https://graph.microsoft.com/v1.0/sites/{client_site_id}'
-#     drive_id = get_drive_id(access_token,site_url_prefix, client_drive_name)
-#     drive_path = f'{site_url_prefix}/drives/{drive_id}/root:'
+    client_drive_name = sharepoint_secret['client_drive_name']
+    client_site_id = sharepoint_secret['client_site_id']
+    site_url_prefix = f'https://graph.microsoft.com/v1.0/sites/{client_site_id}'
+    drive_id = get_drive_id(access_token,site_url_prefix, client_drive_name)
+    drive_path = f'{site_url_prefix}/drives/{drive_id}/root:'
 
-#     folder_relative_path = 'Amy'
-#     # file_name = 'template.pptx'
-#     file_relative_path = f'{folder_relative_path}/{file_name_without_prefix}'
-#     sharepoint_file_path = get_sharepoint_file_path(drive_path,file_relative_path)
+    folder_relative_path = 'Amy'
+    # file_name = 'template.pptx'
+    file_relative_path = f'{folder_relative_path}/{file_name_without_prefix}'
+    sharepoint_file_path = get_sharepoint_file_path(drive_path,file_relative_path)
  
-#     s3.Bucket(bucket_name).download_file(file_name, f'/tmp/{file_name_without_prefix}')
-#     upload_file_to_sharepoint(access_token, sharepoint_file_path, f'/tmp/{file_name_without_prefix}')
-#     # print(access_token)
-#     s3.Object(os.environ['REPROT_BUCKET_NAME'],file_name).delete()
+    s3.Bucket(bucket_name).download_file(file_name, f'/tmp/{file_name_without_prefix}')
+    upload_file_to_sharepoint(access_token, sharepoint_file_path, f'/tmp/{file_name_without_prefix}')
+    # print(access_token)
+    s3.Object(os.environ['REPROT_BUCKET_NAME'],file_name).delete()
 # #################################
     
 #     download_file_name = 'template.pptx'
