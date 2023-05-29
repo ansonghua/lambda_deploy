@@ -16,6 +16,7 @@ logger.setLevel(level)
 
 # ec2_resource = boto3.resource('ec2')
 # ec2_client = boto3.client('ec2')
+
 scan_result_file_name = 'scan-results.json'
 
 s3 = boto3.resource('s3')
@@ -51,6 +52,16 @@ def lambda_handler(event, context):
     tenant_id = sharepoint_secret['tenant_id']
     app_id = sharepoint_secret['app_id']
     client_secret = sharepoint_secret['client_secret']
+    access_token = get_access_token(tenant_id, app_id, client_secret)
+
+    client_drive_name = sharepoint_secret['client_drive_name']
+    client_site_id = sharepoint_secret['client_site_id']
+    site_url_prefix = f'https://graph.microsoft.com/v1.0/sites/{client_site_id}'
+    drive_id = get_drive_id(access_token,site_url_prefix, client_drive_name)
+    drive_path = f'{site_url_prefix}/drives/{drive_id}/root:'
+
+    folder_relative_path = 'Amy'
+    
     rescan = True
   
     if file_name_without_prefix == scan_result_file_name:
@@ -64,7 +75,7 @@ def lambda_handler(event, context):
         file_relative_path = f'{folder_relative_path}/{download_file_name}'
         sharepoint_file_path = get_sharepoint_file_path(drive_path,file_relative_path)
         download_file_from_sharepoint(access_token, sharepoint_file_path, f'/tmp/{download_file_name}')
-        df = pd.read_json(/tmp/{download_file_name})
+        df = pd.read_json(f'/tmp/{download_file_name}')
         split_and_upload_csp_scan_result(df, ['azure','aws','gcp'], bucket_name, False)
         # print(f'donwload file name: {download_file_name}')
         # s3_bucket = s3.Bucket(name=bucket_name)
@@ -83,15 +94,7 @@ def lambda_handler(event, context):
 #         s3.meta.client.copy(copy_source, bucket_name, f'scan_result/{file_name_without_prefix}')
 
     
-    access_token = get_access_token(tenant_id, app_id, client_secret)
- 
-    client_drive_name = sharepoint_secret['client_drive_name']
-    client_site_id = sharepoint_secret['client_site_id']
-    site_url_prefix = f'https://graph.microsoft.com/v1.0/sites/{client_site_id}'
-    drive_id = get_drive_id(access_token,site_url_prefix, client_drive_name)
-    drive_path = f'{site_url_prefix}/drives/{drive_id}/root:'
 
-    folder_relative_path = 'Amy'
     if rescan:
         file_name_without_prefix = file_name_without_prefix.replace('scan','rescan')
     file_relative_path = f'{folder_relative_path}/{file_name_without_prefix}'
