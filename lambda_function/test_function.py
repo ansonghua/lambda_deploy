@@ -16,8 +16,8 @@ logger.setLevel(level)
 # ec2_resource = boto3.resource('ec2')
 # ec2_client = boto3.client('ec2')
 scan_result_file_name = 'scan-results.json'
-s3 = boto3.resource('s3')
 
+s3 = boto3.resource('s3')
 def split_and_upload_csp_scan_result(file_obj,csp,bucket_name):
     csp_scan_file_name = f'{csp}-{scan_result_file_name}'
     local_file_path = f'/tmp/{csp_scan_file_name}'
@@ -49,7 +49,7 @@ def lambda_handler(event, context):
 
 
     if file_name_without_prefix == scan_result_file_name:
-        file_obj = s3.get_object(Bucket=bucket_name, Key=file_name)
+        file_obj = s3.Bucket(bucket_name).Object(file_name).get()
         split_and_upload_csp_scan_result(file_obj, 'aws', bucket_name)
         split_and_upload_csp_scan_result(file_obj, 'azure', bucket_name)
         split_and_upload_csp_scan_result(file_obj, 'gcp', bucket_name)
