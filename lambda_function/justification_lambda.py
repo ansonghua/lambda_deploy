@@ -72,6 +72,14 @@ def lambda_handler(event, context):
 
 
 
+
+# parquet, add client info in file name
+    s3_bucket = s3.Bucket(name=bucket_name)
+    s3_bucket.upload_file(
+        Filename= f'/tmp/{download_file_name}',
+        Key=f'processed_justifications/justifications.parquet'
+    )
+# CSV
     file_relative_path = f'{folder_relative_path}/processed_{download_file_name}'
     upload_file_to_sharepoint(access_token, sharepoint_file_path, f'/tmp/{download_file_name}')
 
