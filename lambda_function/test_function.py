@@ -20,20 +20,22 @@ scan_result_file_name = 'scan-results.json'
 
 s3 = boto3.resource('s3')
 
-def split_and_upload_csp_scan_result(df,csp,bucket_name):
-    csp_scan_file_name = f'{csp}-{scan_result_file_name}'
-    local_file_path = f'/tmp/{csp_scan_file_name}'
-    
-    check_lilst = df['query_result']['data']['rows']
-    csp_cheks_list = [check for check in check_lilst if check['Provider'] == csp]
-    df['query_result']['data']['rows'] = csp_cheks_list
-    df.to_json(local_file_path)
-    
-    s3_bucket = s3.Bucket(name=bucket_name)
-    s3_bucket.upload_file(
-        Filename= local_file_path,
-        Key=f'initial-scan/{csp_scan_file_name}'
-    )
+def split_and_upload_csp_scan_result(df,csps,bucket_name,rescan):
+    for csp in csps:
+        csp_scan_file_name = f'{csp}-{scan_result_file_name}'
+        local_file_path = f'/tmp/{csp_scan_file_name}'
+        
+        check_lilst = df['query_result']['data']['rows']
+        csp_cheks_list = [check for check in check_lilst if check['Provider'] == csp]
+        df['query_result']['data']['rows'] = csp_cheks_list
+        df.to_json(local_file_path)
+        
+        s3_bucket = s3.Bucket(name=bucket_name)
+        file_prefix = "rescan" if rescan else "initial-scan"
+        s3_bucket.upload_file(
+            Filename= local_file_path,
+            Key=f'{file_prefix}/{csp_scan_file_name}'
+        )
 
 def lambda_handler(event, context):
     bucket_name = str(event["detail"]["bucket"]["name"])
@@ -47,15 +49,14 @@ def lambda_handler(event, context):
     tenant_id = sharepoint_secret['tenant_id']
     app_id = sharepoint_secret['app_id']
     client_secret = sharepoint_secret['client_secret']
-
-
+    rescan = True
+  
     if file_name_without_prefix == scan_result_file_name:
         file_content = s3.Bucket(bucket_name).Object(file_name).get()['Body'].read()
         file_obj = io.BytesIO(file_content)
         df = pd.read_json(file_obj)
-        split_and_upload_csp_scan_result(df, 'azure', bucket_name)
-        split_and_upload_csp_scan_result(df, 'aws', bucket_name)
-        split_and_upload_csp_scan_result(df, 'gcp', bucket_name)
+        split_and_upload_csp_scan_result(df, ['azure','aws','gcp'], bucket_name,rescan)
+
 
 #     scan_staus = 'Initial'
 
