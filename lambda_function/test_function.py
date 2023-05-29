@@ -28,6 +28,7 @@ def split_and_upload_csp_scan_result(df,csps,bucket_name,rescan):
         
         check_lilst = df['query_result']['data']['rows']
         csp_cheks_list = [check for check in check_lilst if check['Provider'] == csp]
+        print(f'{csp} csp_cheks_list length:---> {len(csp_cheks_list)}')
         if len(csp_cheks_list) == 0:
             continue
         df2 = df.copy(deep=True)
