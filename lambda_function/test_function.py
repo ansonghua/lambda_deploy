@@ -70,7 +70,7 @@ def lambda_handler(event, context):
         file_content = s3.Bucket(bucket_name).Object(file_name).get()['Body'].read()
         file_obj = io.BytesIO(file_content)
         df = pd.read_json(file_obj)
-        split_and_upload_csp_scan_result(df, ['azure','aws','gcp'], bucket_name,rescan)
+        split_and_upload_csp_scan_result(df, ['aws','azure','gcp'], bucket_name,rescan)
 
     if rescan:
         download_file_name = scan_result_file_name
@@ -78,7 +78,7 @@ def lambda_handler(event, context):
         sharepoint_file_path = get_sharepoint_file_path(drive_path,file_relative_path)
         download_file_from_sharepoint(access_token, sharepoint_file_path, f'/tmp/{download_file_name}')
         df = pd.read_json(f'/tmp/{download_file_name}')
-        split_and_upload_csp_scan_result(df, ['azure','aws','gcp'], bucket_name, False)
+        split_and_upload_csp_scan_result(df, ['aws','azure','gcp'], bucket_name, False)
         # print(f'donwload file name: {download_file_name}')
         # s3_bucket = s3.Bucket(name=bucket_name)
         # s3_bucket.upload_file(
