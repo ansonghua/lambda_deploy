@@ -66,24 +66,25 @@ def lambda_handler(event, context):
     folder_relative_path = 'Amy'
     
     rescan = True
-  
+    csps=['aws','azure','gcp']
     if file_name_without_prefix == scan_result_file_name:
         file_content = s3.Bucket(bucket_name).Object(file_name).get()['Body'].read()
         file_obj = io.BytesIO(file_content)
-        df = pd.read_json(file_obj)
-        split_and_upload_csp_scan_result(df, 'aws', bucket_name,rescan)
-        split_and_upload_csp_scan_result(df, 'azure', bucket_name,rescan)
-        split_and_upload_csp_scan_result(df, 'gcp', bucket_name,rescan)
+
+        for csp in csps:
+            df = pd.read_json(file_obj)
+            split_and_upload_csp_scan_result(df, csp, bucket_name,rescan)
 
     if rescan:
         download_file_name = scan_result_file_name
         file_relative_path = f'{folder_relative_path}/{download_file_name}'
         sharepoint_file_path = get_sharepoint_file_path(drive_path,file_relative_path)
         download_file_from_sharepoint(access_token, sharepoint_file_path, f'/tmp/{download_file_name}')
-        df = pd.read_json(f'/tmp/{download_file_name}')
-        split_and_upload_csp_scan_result(df, 'aws', bucket_name,False)
-        split_and_upload_csp_scan_result(df, 'azure', bucket_name,False)
-        split_and_upload_csp_scan_result(df, 'gcp', bucket_name,False)
+  
+        for csp in csps:
+            df = pd.read_json(f'/tmp/{download_file_name}')
+            split_and_upload_csp_scan_result(df, csp, bucket_name,False)
+
         # print(f'donwload file name: {download_file_name}')
         # s3_bucket = s3.Bucket(name=bucket_name)
         # s3_bucket.upload_file(
