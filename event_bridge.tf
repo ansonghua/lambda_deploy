@@ -13,7 +13,7 @@ resource "aws_cloudwatch_event_rule" "s3_object_create_invoke_lambda" {
     },
     "object": {
       "key": [{
-        "prefix": "input"
+        "prefix": "scan-results.json"
       }]
     }
   }
