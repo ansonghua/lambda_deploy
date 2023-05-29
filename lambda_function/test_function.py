@@ -69,9 +69,9 @@ def lambda_handler(event, context):
     csps=['aws','azure','gcp']
     if file_name_without_prefix == scan_result_file_name:
         file_content = s3.Bucket(bucket_name).Object(file_name).get()['Body'].read()
-        file_obj = io.BytesIO(file_content)
-        df = pd.read_json(file_obj)
         for csp in csps:
+            file_obj = io.BytesIO(file_content)
+            df = pd.read_json(file_obj)
             split_and_upload_csp_scan_result(df, csp, bucket_name,rescan)
 
     if rescan:
