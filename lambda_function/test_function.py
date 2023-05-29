@@ -22,18 +22,19 @@ scan_result_file_name = 'scan-results.json'
 s3 = boto3.resource('s3')
 
 def split_and_upload_csp_scan_result(df,csps,bucket_name,rescan):
-    for csp in csps:
+    df2 = df.copy()
+    for csp in csps:       
         csp_scan_file_name = f'{csp}-{scan_result_file_name}'
         local_file_path = f'/tmp/{csp_scan_file_name}'
         
-        check_lilst = df['query_result']['data']['rows']
+        check_lilst = df2['query_result']['data']['rows']
         csp_cheks_list = [check for check in check_lilst if check['Provider'] == csp]
         print(f'{csp} csp_cheks_list length:---> {len(csp_cheks_list)}')
         if len(csp_cheks_list) == 0:
             continue
-        df2 = df.copy(deep=True)
-        df2['query_result']['data']['rows'] = csp_cheks_list
-        df2.to_json(local_file_path)
+
+        df['query_result']['data']['rows'] = csp_cheks_list
+        df.to_json(local_file_path)
         
         s3_bucket = s3.Bucket(name=bucket_name)
         file_prefix = "rescan" if rescan else "initial-scan"
