@@ -21,28 +21,27 @@ scan_result_file_name = 'scan-results.json'
 
 s3 = boto3.resource('s3')
 
-def split_and_upload_csp_scan_result(df,csps,bucket_name,rescan):
+def split_and_upload_csp_scan_result(df,csp,bucket_name,rescan):
 
-    for csp in csps:       
-        df2 = df.copy()
-        csp_scan_file_name = f'{csp}-{scan_result_file_name}'
-        local_file_path = f'/tmp/{csp_scan_file_name}'
-        
-        check_lilst = df2['query_result']['data']['rows']
-        csp_cheks_list = [check for check in check_lilst if check['Provider'] == csp]
-        print(f'{csp} csp_cheks_list length:---> {len(csp_cheks_list)}')
-        if len(csp_cheks_list) == 0:
-            continue
+    
+    csp_scan_file_name = f'{csp}-{scan_result_file_name}'
+    local_file_path = f'/tmp/{csp_scan_file_name}'
+    
+    check_lilst = df['query_result']['data']['rows']
+    csp_cheks_list = [check for check in check_lilst if check['Provider'] == csp]
+    print(f'{csp} csp_cheks_list length:---> {len(csp_cheks_list)}')
+    if len(csp_cheks_list) == 0:
+        return
 
-        df2['query_result']['data']['rows'] = csp_cheks_list
-        df2.to_json(local_file_path)
-        
-        s3_bucket = s3.Bucket(name=bucket_name)
-        file_prefix = "rescan" if rescan else "initial-scan"
-        s3_bucket.upload_file(
-            Filename= local_file_path,
-            Key=f'{file_prefix}/{csp_scan_file_name}'
-        )
+    df['query_result']['data']['rows'] = csp_cheks_list
+    df.to_json(local_file_path)
+    
+    s3_bucket = s3.Bucket(name=bucket_name)
+    file_prefix = "rescan" if rescan else "initial-scan"
+    s3_bucket.upload_file(
+        Filename= local_file_path,
+        Key=f'{file_prefix}/{csp_scan_file_name}'
+    )
 
 def lambda_handler(event, context):
     bucket_name = str(event["detail"]["bucket"]["name"])
@@ -72,7 +71,9 @@ def lambda_handler(event, context):
         file_content = s3.Bucket(bucket_name).Object(file_name).get()['Body'].read()
         file_obj = io.BytesIO(file_content)
         df = pd.read_json(file_obj)
-        split_and_upload_csp_scan_result(df, ['aws','azure','gcp'], bucket_name,rescan)
+        split_and_upload_csp_scan_result(df, 'aws', bucket_name,rescan)
+        split_and_upload_csp_scan_result(df, 'azure', bucket_name,rescan)
+        split_and_upload_csp_scan_result(df, 'gcp', bucket_name,rescan)
 
     if rescan:
         download_file_name = scan_result_file_name
@@ -80,7 +81,9 @@ def lambda_handler(event, context):
         sharepoint_file_path = get_sharepoint_file_path(drive_path,file_relative_path)
         download_file_from_sharepoint(access_token, sharepoint_file_path, f'/tmp/{download_file_name}')
         df = pd.read_json(f'/tmp/{download_file_name}')
-        split_and_upload_csp_scan_result(df, ['aws','azure','gcp'], bucket_name, False)
+        split_and_upload_csp_scan_result(df, 'aws', bucket_name,False)
+        split_and_upload_csp_scan_result(df, 'azure', bucket_name,False)
+        split_and_upload_csp_scan_result(df, 'gcp', bucket_name,False)
         # print(f'donwload file name: {download_file_name}')
         # s3_bucket = s3.Bucket(name=bucket_name)
         # s3_bucket.upload_file(
