@@ -22,8 +22,9 @@ scan_result_file_name = 'scan-results.json'
 s3 = boto3.resource('s3')
 
 def split_and_upload_csp_scan_result(df,csps,bucket_name,rescan):
-    df2 = df.copy()
+
     for csp in csps:       
+        df2 = df.copy()
         csp_scan_file_name = f'{csp}-{scan_result_file_name}'
         local_file_path = f'/tmp/{csp_scan_file_name}'
         
