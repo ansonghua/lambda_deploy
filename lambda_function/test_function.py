@@ -74,6 +74,7 @@ def lambda_handler(event, context):
             df = pd.read_json(file_obj)
             split_and_upload_csp_scan_result(df, csp, bucket_name,rescan)
 
+    # when rescan ,pull initial scan from sharepoint and split and upload to s3
     if rescan:
         download_file_name = scan_result_file_name
         file_relative_path = f'{folder_relative_path}/{download_file_name}'

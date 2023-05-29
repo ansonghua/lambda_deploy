@@ -1,6 +1,29 @@
 resource "aws_cloudwatch_event_rule" "s3_object_create_invoke_lambda" {
 
-  name           = "start_ec2"
+  name           = "invoke_prep_lambda"
+  description    = "Invoke Lambda When Object Created"
+
+  event_pattern = <<EOF
+{
+  "source": ["aws.s3"],
+  "detail-type": ["Object Created"],
+  "detail": {
+    "bucket": {
+      "name": ["${aws_s3_bucket.my_bucket.bucket}"]
+    },
+    "object": {
+      "key": [{
+        "prefix": "scan-results.json"
+      }]
+    }
+  }
+}
+EOF
+}
+
+resource "aws_cloudwatch_event_rule" "s3_object_create_invoke_jsutification_lambda" {
+
+  name           = "invoke_justification_lambda"
   description    = "Invoke Lambda When Object Created"
 
   event_pattern = <<EOF
