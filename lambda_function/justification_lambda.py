@@ -66,7 +66,7 @@ def lambda_handler(event, context):
     folder_relative_path = 'Amy'
 
     download_file_name = 'justifications.csv'
-
+    file_relative_path = f'{folder_relative_path}/processed_{download_file_name}'
     sharepoint_file_path = get_sharepoint_file_path(drive_path,file_relative_path)
     download_file_from_sharepoint(access_token, sharepoint_file_path, f'/tmp/{download_file_name}')
 
