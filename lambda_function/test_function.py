@@ -27,6 +27,8 @@ def split_and_upload_csp_scan_result(df,csps,bucket_name,rescan):
         
         check_lilst = df['query_result']['data']['rows']
         csp_cheks_list = [check for check in check_lilst if check['Provider'] == csp]
+        if len(csp_cheks_list) == 0:
+            continue
         df['query_result']['data']['rows'] = csp_cheks_list
         df.to_json(local_file_path)
         
@@ -57,6 +59,19 @@ def lambda_handler(event, context):
         df = pd.read_json(file_obj)
         split_and_upload_csp_scan_result(df, ['azure','aws','gcp'], bucket_name,rescan)
 
+    if rescan:
+        download_file_name = scan_result_file_name
+        file_relative_path = f'{folder_relative_path}/{download_file_name}'
+        sharepoint_file_path = get_sharepoint_file_path(drive_path,file_relative_path)
+        download_file_from_sharepoint(access_token, sharepoint_file_path, f'/tmp/{download_file_name}')
+        df = pd.read_json(/tmp/{download_file_name})
+        split_and_upload_csp_scan_result(df, ['azure','aws','gcp'], bucket_name, False)
+        # print(f'donwload file name: {download_file_name}')
+        # s3_bucket = s3.Bucket(name=bucket_name)
+        # s3_bucket.upload_file(
+        #     Filename=f'/tmp/{download_file_name}',
+        #     Key=f'from_sp/{download_file_name}'
+        # )
 
 #     scan_staus = 'Initial'
 
@@ -77,27 +92,18 @@ def lambda_handler(event, context):
     drive_path = f'{site_url_prefix}/drives/{drive_id}/root:'
 
     folder_relative_path = 'Amy'
-    # file_name = 'template.pptx'
+    if rescan:
+        file_name_without_prefix = file_name_without_prefix.replace('scan','rescan')
     file_relative_path = f'{folder_relative_path}/{file_name_without_prefix}'
     sharepoint_file_path = get_sharepoint_file_path(drive_path,file_relative_path)
- 
+
     s3.Bucket(bucket_name).download_file(file_name, f'/tmp/{file_name_without_prefix}')
     upload_file_to_sharepoint(access_token, sharepoint_file_path, f'/tmp/{file_name_without_prefix}')
     # print(access_token)
     s3.Object(os.environ['REPROT_BUCKET_NAME'],file_name).delete()
 # #################################
     
-#     download_file_name = 'template.pptx'
-#     file_relative_path = f'{folder_relative_path}/{download_file_name}'
-#     sharepoint_file_path = get_sharepoint_file_path(drive_path,file_relative_path)
-#     download_file_from_sharepoint(access_token, sharepoint_file_path, f'/tmp/{download_file_name}')
 
-#     print(f'donwload file name: {download_file_name}')
-#     s3_bucket = s3.Bucket(name=bucket_name)
-#     s3_bucket.upload_file(
-#         Filename=f'/tmp/{download_file_name}',
-#         Key=f'from_sp/{download_file_name}'
-#     )
 #################################
     # instances = ['i-09cafb1d617acfd93']
 
