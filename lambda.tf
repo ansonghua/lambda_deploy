@@ -26,9 +26,9 @@ resource "aws_lambda_function" "test_lambda" {
       REPROT_BUCKET_NAME      = aws_s3_bucket.my_bucket.bucket
     }
   }
-  lifecycle {
-    ignore_changes = [source_code_hash]
-  }
+  # lifecycle {
+  #   ignore_changes = [source_code_hash]
+  # }
 }
 
 resource "aws_lambda_permission" "object_created_invoke_lambda" {
