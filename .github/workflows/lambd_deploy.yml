@@ -22,6 +22,7 @@ jobs:
         cd ${{ github.workspace }}
         touch abc.txt
         ls -al ${{ github.workspace }}/abc.txt
+        cp abc.txt /artifact/python/
         pwd
         echo "git hub workspace is ${{ github.workspace }}"
         if [ "${{ github.ref }}" = "refs/heads/main" ]; then
@@ -30,7 +31,12 @@ jobs:
           echo "env_name=dev" >> "$GITHUB_OUTPUT"
         else
            echo "env_name=feature" >> "$GITHUB_OUTPUT"
-        fi               
+        fi 
+    - uses: actions/upload-artifact@master
+      with:
+        name: python-zip
+        path: /artifact/python
+
     - run: |
         echo "${{ steps.env-setup.outputs.env_name }}"
 
@@ -40,6 +46,15 @@ jobs:
     environment: 
       name: ${{ needs.setup-env.outputs.env_name }}
     steps:
+    - uses: actions/download-artifact@master
+      with:
+        name: python-zip
+        path: /artifact/python
+    - name: download python zip to lambda zip location
+      run: |
+        pwd
+        ls /artifact/python/abc.txt
+
     - uses: actions/checkout@v2
     - uses: actions/setup-python@v2
       with:
