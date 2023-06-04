@@ -58,7 +58,7 @@ jobs:
     - name: download python zip to lambda zip location
       run: |
         pwd
-        ls -al artifact/python/abc.txt
+        ls -al ${{ github.workspace }}/artifact/python/abc.txt
 
     - uses: actions/checkout@v2
     - uses: actions/setup-python@v2
