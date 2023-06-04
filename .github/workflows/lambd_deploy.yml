@@ -17,7 +17,7 @@ jobs:
     - uses: actions/upload-artifact@v3
       with:
         name: artifact
-        path: ${{ github.workspace }}/artifact/python/
+        path: /artifact/python
     - id: env-setup
       run: |
         echo "Running on branch ${{ github.ref }}"
@@ -25,8 +25,9 @@ jobs:
         pwd
   
         touch abc.txt
-        ls -al ${{ github.workspace }}/abc.txt
-        cp abc.txt ${{ github.workspace }}/artifact/python/abc.txt
+        mkdir -p /artifact/python
+        ls abc.txt
+        cp abc.txt /artifact/python/
 
 
         echo "git hub workspace is ${{ github.workspace }}"
