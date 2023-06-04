@@ -22,7 +22,7 @@ jobs:
         cd ${{ github.workspace }}
         touch abc.txt
         ls -al ${{ github.workspace }}/abc.txt
-        cp abc.txt /artifact/python/
+        cp abc.txt /artifact/python/abc.txt
         pwd
         echo "git hub workspace is ${{ github.workspace }}"
         if [ "${{ github.ref }}" = "refs/heads/main" ]; then
