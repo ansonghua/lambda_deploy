@@ -14,9 +14,9 @@ jobs:
     outputs:
       env_name: ${{ steps.env-setup.outputs.env_name }}    
     steps:
-    - uses: actions/upload-artifact@master
+    - uses: actions/upload-artifact@v3
       with:
-        name: python-zip
+        name: artifact
         path: ${{ github.workspace }}/artifact/python
     - id: env-setup
       run: |
