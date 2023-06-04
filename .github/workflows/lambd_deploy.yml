@@ -14,6 +14,10 @@ jobs:
     outputs:
       env_name: ${{ steps.env-setup.outputs.env_name }}    
     steps:
+    - uses: actions/upload-artifact@master
+      with:
+        name: python-zip
+        path: /artifact/python
     - id: env-setup
       run: |
         echo "Running on branch ${{ github.ref }}"
@@ -22,7 +26,7 @@ jobs:
         cd ${{ github.workspace }}
         touch abc.txt
         ls -al ${{ github.workspace }}/abc.txt
-        cp abc.txt /artifact/python/abc.txt
+        cp abc.txt /artifact/python/
         pwd
         echo "git hub workspace is ${{ github.workspace }}"
         if [ "${{ github.ref }}" = "refs/heads/main" ]; then
@@ -32,10 +36,7 @@ jobs:
         else
            echo "env_name=feature" >> "$GITHUB_OUTPUT"
         fi 
-    - uses: actions/upload-artifact@master
-      with:
-        name: python-zip
-        path: /artifact/python
+
 
     - run: |
         echo "${{ steps.env-setup.outputs.env_name }}"
