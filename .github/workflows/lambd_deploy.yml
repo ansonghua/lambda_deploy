@@ -17,17 +17,19 @@ jobs:
     - uses: actions/upload-artifact@master
       with:
         name: python-zip
-        path: /artifact/python
+        path: artifact/python
     - id: env-setup
       run: |
         echo "Running on branch ${{ github.ref }}"
         echo "git hub workspace is ${{ github.workspace }}"
         pwd
         cd ${{ github.workspace }}
+        pwd
         touch abc.txt
         ls -al ${{ github.workspace }}/abc.txt
-        cp abc.txt /artifact/python/
-        pwd
+        cp abc.txt {{ github.workspace }}/artifact/python/
+        cp abc.txt artifact/python/
+
         echo "git hub workspace is ${{ github.workspace }}"
         if [ "${{ github.ref }}" = "refs/heads/main" ]; then
           echo "env_name=main" >> "$GITHUB_OUTPUT"
