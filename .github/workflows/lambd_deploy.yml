@@ -23,11 +23,10 @@ jobs:
         echo "Running on branch ${{ github.ref }}"
         echo "git hub workspace is ${{ github.workspace }}"
         pwd
-        cd ${{ github.workspace }}
-        pwd
+  
         touch abc.txt
         ls -al ${{ github.workspace }}/abc.txt
-        cp abc.txt {{ github.workspace }}/artifact/python/
+        cp abc.txt ${{ github.workspace }}/artifact/python/
         cp abc.txt artifact/python/
 
         echo "git hub workspace is ${{ github.workspace }}"
