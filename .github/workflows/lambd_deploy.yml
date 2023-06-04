@@ -50,19 +50,16 @@ jobs:
     steps:
     - run: |
         pwd
-    - uses: actions/download-artifact@v3
-      with:
-        name: artifact
-        path: artifact/python
-    - name: download python zip to lambda zip location
-      run: |
-        pwd
-        ls -al artifact/python/abc.txt
 
     - uses: actions/checkout@v2
     - uses: actions/setup-python@v2
       with:
         python-version: '3.9'
+    - uses: actions/download-artifact@v3
+      with:
+        name: artifact
+        path: artifact/python
+ 
     - name: Install dependencies
       run: |
         pwd
