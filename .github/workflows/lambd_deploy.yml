@@ -17,7 +17,7 @@ jobs:
     - uses: actions/upload-artifact@master
       with:
         name: python-zip
-        path: artifact/python
+        path: /artifact/python
     - id: env-setup
       run: |
         echo "Running on branch ${{ github.ref }}"
