@@ -17,7 +17,7 @@ jobs:
     - uses: actions/upload-artifact@v3
       with:
         name: artifact
-        path: artifact/python
+        path: ${{ github.workspace }}/artifact/python
     - id: env-setup
       run: |
         echo "Running on branch ${{ github.ref }}"
