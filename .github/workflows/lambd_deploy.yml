@@ -49,10 +49,10 @@ jobs:
     environment: 
       name: ${{ needs.setup-env.outputs.env_name }}
     steps:
-    # - uses: actions/download-artifact@v3
-    #   with:
-    #     name: artifact
-
+    - uses: actions/download-artifact@v3
+      with:
+        name: artifact
+        path: artifact/python/*.txt
     - name: download python zip to lambda zip location
       run: |
         pwd
