@@ -28,7 +28,7 @@ jobs:
         mkdir -p artifact/python
         ls abc.txt
         cp abc.txt artifact/python/
-
+        ls artifact/python/abc.txt
 
         echo "git hub workspace is ${{ github.workspace }}"
         if [ "${{ github.ref }}" = "refs/heads/main" ]; then
@@ -49,14 +49,14 @@ jobs:
     environment: 
       name: ${{ needs.setup-env.outputs.env_name }}
     steps:
-    - uses: actions/download-artifact@master
+    - uses: actions/download-artifact@v3
       with:
         name: artifact
         path: artifact/python
     - name: download python zip to lambda zip location
       run: |
         pwd
-        ls artifact/python/abc.txt
+        ls -al artifact/python/abc.txt
 
     - uses: actions/checkout@v2
     - uses: actions/setup-python@v2
